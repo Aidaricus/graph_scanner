@@ -1,5 +1,12 @@
 import cv2
 
+def make_tuple_for_graph(circles):
+    res = []
+    cnt = 1
+    for circle in circles:
+        res.append((circle, cnt))
+        cnt += 1
+    return res
 
 def show(image):
     w = image.shape[1] // 2

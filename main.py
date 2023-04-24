@@ -2,14 +2,14 @@ import sys, os
 from shutil import copyfile
 
 import networkx as nx
-import build
-
 import cv2
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtGui import QPixmap
+
+import build
 from pyqt.bar import uiMainWindow
-from pyqt.window_scanned import uiScanning
+from pyqt.scanned import uiScanning
 from pyqt.show import uiOutputWindow
 
 
@@ -93,18 +93,12 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
         resized = pixmap.scaled(w // div, h // div)
         # print("YES")
         self.scanned_image_label.setPixmap(resized)
+        # self.show_scroll_area()
         self.show()
         os.remove("scanned_image.png")
 
     # def show_scroll_area(self):
-    #     cnt = 1
-    #     layout = self.verticalLayout_3
-    #     for node in self.graph.nodes:
-    #         hor_layout = QtWidgets.QVBoxLayout()
-    #         left_label = QLabel(f'{cnt}')
-    #         right_label =
-    #         layout.addWidget(label)
-    #         cnt += 1
+
 
 import matplotlib.pyplot as plt
 
@@ -177,6 +171,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         os.remove("output_image.png")
         # self.show_scroll_area()
         self.show()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
