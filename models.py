@@ -1,7 +1,8 @@
 import math
+
+
 def vector_product(v1, v2):
     return v1[0] * v2[1] - v1[1] * v2[0]
-
 
 class point:
     def __init__(self, x, y):
@@ -29,7 +30,6 @@ class line:
         v2 = (x2 - self.point2.x, y2 - self.point2.y)
         print(vector_product(v1, v2))
 
-
 class circle:
     def __init__(self, center, radius):
         self.center = center
@@ -42,7 +42,6 @@ class circle:
 
         k = (y2 - y1) / (x2 - x1)
         d = (y1 * x2 - y2 * x1) / (x2 - x1)
-
 
         a = 1 + k * k
         b = - 2 * self.center.x + 2 * k * (d - self.center.y)

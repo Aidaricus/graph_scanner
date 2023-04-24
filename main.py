@@ -1,14 +1,17 @@
-import sys
+import sys, os
+from shutil import copyfile
+
+import networkx as nx
+import build
+
+import cv2
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtGui import QPixmap
-from shutil import copyfile
 from pyqt.bar import uiMainWindow
 from pyqt.window_scanned import uiScanning
 from pyqt.show import uiOutputWindow
-import cv2
-import build, os
-import networkx as nx
+
 
 class MainWindow(QtWidgets.QMainWindow, uiMainWindow):
     def __init__(self):
@@ -16,13 +19,11 @@ class MainWindow(QtWidgets.QMainWindow, uiMainWindow):
         self.setup_ui(self)
         self.show()
         self.file = None
-
-        # ???        self.btn_download.addAction(self.add_file)
         self.btn_image.clicked.connect(self.add_file)  # !!! +++
         self.btn_scan.clicked.connect(self.scan_file)
+
     @QtCore.pyqtSlot()
     def add_file(self):
-
         fname, filetype = QFileDialog.getOpenFileName(
             self,
             "Open file",
@@ -41,13 +42,13 @@ class MainWindow(QtWidgets.QMainWindow, uiMainWindow):
         self.file = fname
 
     def scan_file(self):
-
         if self.file is not None:
 
             self.window = ScannedWindow(self.file)
             # self.window.show()
         else:
             self.status_label.setText("file not selected")
+
     def write_status(self, fname):
         text = "File " + fname + "\nwas readen"
         self.status_label.setText(text, )
@@ -55,7 +56,6 @@ class MainWindow(QtWidgets.QMainWindow, uiMainWindow):
 class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
     def __init__(self, file):
         super().__init__()
-
         self.setup_ui(self)
         self.file = file
         self.show()
@@ -77,6 +77,7 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
             self.status_label.setText("")
         else:
             self.status_label.setText("Выберите режим работы")
+
     def show_scanned(self):
         image = cv2.imread(self.file)
         self.graph = build.build_graph(image)
@@ -155,6 +156,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         self.output_label.setPixmap(resized)
         os.remove("output_image.png")
         # self.show()
+
     def show_clear_graph(self):
         pos = {}
         cnt = 1
@@ -175,6 +177,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         os.remove("output_image.png")
         # self.show_scroll_area()
         self.show()
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     check = MainWindow()

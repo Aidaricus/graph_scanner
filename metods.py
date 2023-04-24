@@ -1,5 +1,6 @@
 import cv2
 
+
 def show(image):
     w = image.shape[1] // 2
     h = image.shape[0] // 2

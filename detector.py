@@ -1,7 +1,10 @@
 import cv2
 import numpy as np
+
 from filters import red_filter
 from models import circle, point, line
+
+
 # detect_cicrles
 def find_circles(img):
     # my_photo = cv2.imread('images/graph4.jpg')
@@ -48,7 +51,6 @@ def find_lines(img):
         maxLineGap= 200  # Max allowed gap between line for joining them
     )
 
-
     # Iterate over points
     if lines is not None:
         for points in lines:
@@ -56,5 +58,4 @@ def find_lines(img):
             lines_list.append(line(point(x1, y1), point(x2, y2)))
 
     else: print("LINES NOT FOUND")
-
     return lines_list

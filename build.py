@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
+import networkx as nx
 
 import detector
 import metods
-import networkx as nx
+
 
 def normalize_circles(circles, lines):
     # Увеличим длину каждого круга до максимального
@@ -16,6 +17,7 @@ def normalize_circles(circles, lines):
         if (circle.lines is None):
             ls = lines_of_circle(circle, lines)
             circle.set_lines(ls)
+
 def lines_of_circle(circle, lines):
     res = []
     for line in lines:
@@ -74,6 +76,7 @@ def build_graph(img):
                             # metods.show(circle_img)
     else: print("circles not found")
     return G
+
 def write_graph(graph, img, file):
     cnt = 1
     for node in graph.nodes:
@@ -85,7 +88,6 @@ def write_graph(graph, img, file):
         cv2.line(img, (circle1.center.x, circle1.center.y), (circle2.center.x, circle2.center.y), (0, 255, 0), 5)
     # metods.show(img)
     cv2.imwrite(file, img)
-
 
 def show_iterativly(circles, lines, img):
     dict_of_lines = {}
