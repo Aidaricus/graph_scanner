@@ -3,8 +3,9 @@ from shutil import copyfile
 
 import networkx as nx
 import cv2
+import matplotlib.pyplot as plt
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtGui import QPixmap
 
 import build
@@ -59,10 +60,18 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
         self.setup_ui(self)
         self.file = file
         self.show()
-        self.show_scanned()
         self.btn_start.clicked.connect(self.give_output)
-        # self.show_scroll_area()
-
+        image = cv2.imread(self.file)
+        self.graph = build.build_graph(image)
+        try:
+            self.create_scroll_area()
+        except:
+            print('create scroll area error')
+        self.show_scanned()
+        try:
+            self.confirm_btn.clicked.connect(self.show_scanned)
+        except:
+            print("rename error")
     def give_output(self):
         if (self.radbtn_show_graph.isChecked()):
             # res = ''
@@ -73,42 +82,54 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
             # elif (self.radbtn_show_graph.isChecked()):
             #     res = "show"
 
-            self.window = OutputWindow(self.file, self.graph)
+            self.window = OutputWindow(self.file, self.graph, self.names)
             self.status_label.setText("")
         else:
             self.status_label.setText("Выберите режим работы")
 
     def show_scanned(self):
+        self.refresh_names()
         image = cv2.imread(self.file)
-        self.graph = build.build_graph(image)
-
         copyfile(self.file, "scanned_image.png")
-        build.write_graph(self.graph, image, "scanned_image.png")
-
+        print("here")
+        build.write_graph(self.graph, image, "scanned_image.png", self.names)
         pixmap = QPixmap("scanned_image.png")
         w = pixmap.width()
         h = pixmap.height()
         d = max(w, h)
         div = d / 320
         resized = pixmap.scaled(w // div, h // div)
-        # print("YES")
         self.scanned_image_label.setPixmap(resized)
-        # self.show_scroll_area()
+        try:
+            # pass
+            self.show_scroll_area()
+        except:
+            print('show scroll area error')
         self.show()
         os.remove("scanned_image.png")
 
-    # def show_scroll_area(self):
-
-
-import matplotlib.pyplot as plt
+    def create_scroll_area(self):
+        self.names = {}
+        cnt = 1
+        nodes = self.graph.nodes
+        vbox = self.node_layout
+        for node in nodes:
+            line_edit = QLineEdit(f'{cnt}')
+            cnt += 1
+            self.names[node] = line_edit
+            vbox.addWidget(line_edit)
+        self.setLayout(vbox)
+    def show_scroll_area(self):
+        for node in self.graph.nodes:
+            print(f'old name: {self.names[node].text()}')
 
 class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
-    def __init__(self, file, graph):
+    def __init__(self, file, graph, names):
         super().__init__()
-
         self.setup_ui(self)
         self.file = file
         self.graph = graph
+        self.names = names
         self.show()
         # if (key == "bfs"):
         #     # # print("ES")
@@ -121,6 +142,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         #     self.show_clear_graph()
         self.show_clear_graph()
         # self.show()
+
     def do_bfs(self):
         # print("YES")
         # pos = {}
@@ -157,7 +179,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         print("YES")
         for node in self.graph.nodes:
             pos[node] = (node.center.x, node.center.y)
-            plt.text(node.center.x, node.center.y, "{}".format(cnt))
+            plt.text(node.center.x, node.center.y, self.names[node].text())
             cnt += 1
         nx.draw(self.graph, pos)
         plt.savefig("output_image.png")
@@ -165,13 +187,12 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         w = pixmap.width()
         h = pixmap.height()
         d = max(w, h)
-        div = d / 500
+        div = d / 400
         resized = pixmap.scaled(w // div, h // div)
         self.output_label.setPixmap(resized)
         os.remove("output_image.png")
         # self.show_scroll_area()
         self.show()
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

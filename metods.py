@@ -4,7 +4,7 @@ def make_tuple_for_graph(circles):
     res = []
     cnt = 1
     for circle in circles:
-        res.append((circle, cnt))
+        res.append(circle)
         cnt += 1
     return res
 
@@ -16,4 +16,3 @@ def show(image):
 
     cv2.imshow('circle ', resized)
     cv2.waitKey()
-
