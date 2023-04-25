@@ -74,13 +74,13 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
             print("rename error")
     def give_output(self):
         if (self.radbtn_show_graph.isChecked()):
-            # res = ''
-            # if (self.radbtn_bfs.isChecked()):
-            #     res = "bfs"
-            # elif (self.radbtn_dfs.isChecked()):
-            #     res = "dfs"
-            # elif (self.radbtn_show_graph.isChecked()):
-            #     res = "show"
+            res = ''
+            if (self.radbtn_bfs.isChecked()):
+                res = "bfs"
+            elif (self.radbtn_dfs.isChecked()):
+                res = "dfs"
+            elif (self.radbtn_show_graph.isChecked()):
+                res = "show"
 
             self.window = OutputWindow(self.file, self.graph, self.names)
             self.status_label.setText("")
@@ -88,10 +88,9 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
             self.status_label.setText("Выберите режим работы")
 
     def show_scanned(self):
-        self.refresh_names()
+        # Достаем изображение и рисуем на нём сканнированный граф
         image = cv2.imread(self.file)
         copyfile(self.file, "scanned_image.png")
-        print("here")
         build.write_graph(self.graph, image, "scanned_image.png", self.names)
         pixmap = QPixmap("scanned_image.png")
         w = pixmap.width()
@@ -121,7 +120,7 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
         self.setLayout(vbox)
     def show_scroll_area(self):
         for node in self.graph.nodes:
-            print(f'old name: {self.names[node].text()}')
+            print(f'new name: {self.names[node].text()}')
 
 class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
     def __init__(self, file, graph, names):
@@ -174,24 +173,35 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         # self.show()
 
     def show_clear_graph(self):
+        # Создадим словарь node : координаты
         pos = {}
-        cnt = 1
-        print("YES")
         for node in self.graph.nodes:
             pos[node] = (node.center.x, node.center.y)
             plt.text(node.center.x, node.center.y, self.names[node].text())
-            cnt += 1
-        nx.draw(self.graph, pos)
+
+        # Красивости графа
+        options = {
+            'node_color': 'blue',  # color of node
+            'node_size': 2000,  # size of node
+            'width': 3,  # line width of edges
+            'edge_color': 'black',  # edge color
+        }
+
+        # Нарисуем граф с помощью networkx.draw
+        nx.draw(self.graph, pos, **options)
+
+        # Сохраним нарисованный граф в виде временного файла
         plt.savefig("output_image.png")
         pixmap = QPixmap("output_image.png")
+
+        # Выведем изображение как pixmap
         w = pixmap.width()
         h = pixmap.height()
         d = max(w, h)
-        div = d / 400
+        div = d / 800
         resized = pixmap.scaled(w // div, h // div)
         self.output_label.setPixmap(resized)
         os.remove("output_image.png")
-        # self.show_scroll_area()
         self.show()
 
 if __name__ == "__main__":

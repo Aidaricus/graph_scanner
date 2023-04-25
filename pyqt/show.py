@@ -4,11 +4,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class uiOutputWindow(object):
     def setup_ui(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(783, 575)
+        MainWindow.resize(1000, 800)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.output_label = QtWidgets.QLabel(self.centralwidget)
-        self.output_label.setGeometry(QtCore.QRect(104, 95, 571, 391))
+        self.output_label.setGeometry(QtCore.QRect(104, 95, 800, 600))
         self.output_label.setObjectName("output_label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
