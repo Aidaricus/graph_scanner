@@ -24,11 +24,10 @@ class line:
         x1, y1 = an_line.point1.x, an_line.point1.y
         v1 = (x1 - self.point1.x, y1 - self.point1.y)
         v2 = (x1 - self.point2.x, y1 - self.point2.y)
-        print(vector_product(v1, v2))
+
         x2, y2 = an_line.point2.x, an_line.point2.y
         v1 = (x2 - self.point1.x, y2 - self.point1.y)
         v2 = (x2 - self.point2.x, y2 - self.point2.y)
-        print(vector_product(v1, v2))
 
 class circle:
     def __init__(self, center, radius):
@@ -50,13 +49,12 @@ class circle:
 
         min_x = min(x1, x2)
         max_x = max(x1, x2)
-
         if (D >= 0):
             one = (-b - math.sqrt(D)) / (2 * a)
             two = (-b + math.sqrt(D)) / (2 * a)
             if (min_x < one and one < max_x or min_x < two and two < max_x):
                 return True
-            else: return  False
+            else: return False
         else: return False
 
     def __lt__(self, other):

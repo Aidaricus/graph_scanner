@@ -27,9 +27,9 @@ class uiMainWindow(object):
         self.btn_scan = QtWidgets.QPushButton(self.centralwidget)
         self.btn_scan.setGeometry(QtCore.QRect(60, 360, 121, 71))
         self.btn_scan.setObjectName("btn_scan")
-        self.radbtn_red = QtWidgets.QRadioButton(self.centralwidget)
-        self.radbtn_red.setGeometry(QtCore.QRect(70, 270, 101, 20))
-        self.radbtn_red.setObjectName("radbtn_red")
+        # self.radbtn_red = QtWidgets.QRadioButton(self.centralwidget)
+        # self.radbtn_red.setGeometry(QtCore.QRect(70, 270, 101, 20))
+        # self.radbtn_red.setObjectName("radbtn_red")
         self.status_label = QtWidgets.QLabel(self.centralwidget)
         self.status_label.setGeometry(QtCore.QRect(294, 65, 301, 41))
         self.status_label.setAutoFillBackground(True)
@@ -56,7 +56,7 @@ class uiMainWindow(object):
         self.btn_image.setText(_translate("MainWindow", "Image"))
         self.image_label.setText(_translate("MainWindow", "Здесь будет отображатся загруженное изображение"))
         self.btn_scan.setText(_translate("MainWindow", "Scan"))
-        self.radbtn_red.setText(_translate("MainWindow", "Red Filter"))
+        # self.radbtn_red.setText(_translate("MainWindow", "Red Filter"))
         self.status_label.setText(_translate("MainWindow", "Status:"))
 
 

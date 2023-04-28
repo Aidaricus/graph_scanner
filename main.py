@@ -74,14 +74,6 @@ class ScannedWindow(QtWidgets.QMainWindow, uiScanning):
             print("rename error")
     def give_output(self):
         if (self.radbtn_show_graph.isChecked()):
-            res = ''
-            if (self.radbtn_bfs.isChecked()):
-                res = "bfs"
-            elif (self.radbtn_dfs.isChecked()):
-                res = "dfs"
-            elif (self.radbtn_show_graph.isChecked()):
-                res = "show"
-
             self.window = OutputWindow(self.file, self.graph, self.names)
             self.status_label.setText("")
         else:
@@ -130,46 +122,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         self.graph = graph
         self.names = names
         self.show()
-        # if (key == "bfs"):
-        #     # # print("ES")
-        #     # s = (self.graph.nodes[0].center.x, self.graph.nodes[0].center.y)
-        #     # print(self.graph.nodes)
-        #     self.do_bfs()
-        # elif (key == "dfs"):
-        #     self.do_dfs()
-        # elif (key == 'show'):
-        #     self.show_clear_graph()
         self.show_clear_graph()
-        # self.show()
-
-    def do_bfs(self):
-        # print("YES")
-        # pos = {}
-        # cnt = 1
-        # for node in self.graph.nodes:
-        #     pos[node] = (node.center.x, node.center.y)
-        #     plt.text(node.center.x, node.center.y, "{}".format(cnt))
-        #     cnt += 1
-        pos = nx.planar_layout(self.graph)
-        source = (self.graph.nodes[0].center.x, self.graph.nodes[0].center.y)
-
-        print("YES")
-        nx.draw(self.graph, pos, with_labels=True, node_color="#f86e00")
-
-
-        bfs = nx.bfs_tree(self.graph, source=source)
-
-        nx.draw(bfs, pos, with_labels=True, node_color="#f86e00", edge_color="#dd2222")
-
-        plt.savefig("output_image.png")
-        pixmap = QPixmap("output_image.png")
-        w = pixmap.width()
-        h = pixmap.height()
-        d = max(w, h)
-        div = d / 300
-        resized = pixmap.scaled(w // div, h // div)
-        self.output_label.setPixmap(resized)
-        os.remove("output_image.png")
         # self.show()
 
     def show_clear_graph(self):
@@ -177,7 +130,7 @@ class OutputWindow(QtWidgets.QMainWindow, uiOutputWindow):
         pos = {}
         for node in self.graph.nodes:
             pos[node] = (node.center.x, node.center.y)
-            plt.text(node.center.x, node.center.y, self.names[node].text())
+            plt.text(node.center.x, node.center.y, self.names[node].text(), size = 10)
 
         # Красивости графа
         options = {

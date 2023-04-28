@@ -7,7 +7,6 @@ from models import circle, point, line
 
 # detect_cicrles
 def find_circles(img):
-    # my_photo = cv2.imread('images/graph4.jpg')
     filterd_image = cv2.medianBlur(img, 7)
     rows = img.shape[0]
 
